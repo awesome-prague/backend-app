@@ -1,0 +1,24 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": ["**/generated/**/*.*"]
+  },
+  "rules": {
+    "jsx-no-lambda": false,
+    "jsx-boolean-value": false,
+    "member-access": false,
+    "curly": false,
+    "no-shadowed-variable": false,
+    "interface-name": [true, "never-prefix"],
+    "object-literal-sort-keys": false,
+    "no-console": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case",
+      "allow-leading-underscore"
+    ]
+  }
+}
