@@ -1,0 +1,47 @@
+# import Post, Vote, VoteType, UserRole, Category, AppState from "./generated/prisma.graphql"
+
+type Query {
+  feed: [Post!]!
+  drafts: [Post!]!
+  post(id: ID!): Post
+  posts: [Post!]!
+  welcomePost: Post
+  searchCategories(value: String!): [Category!]!
+  appState: AppState
+  me: User
+}
+
+type Mutation {
+  # NOTE: User related mutations
+  signup(email: String!, password: String!, name: String!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+  forgetPassword(email: String!): User!
+  resetPassword(email: String!): AuthPayload!
+  updatePassword(oldPassword: String!, newPassword: String!): User!
+  validateEmail(emailToken: String!): User!
+
+  # NOTE: Post related mutations
+  createDraftPost(title: String!, text: String!): Post!
+  publishPost(id: ID!): Post!
+  deletePost(id: ID!): Post!
+  addVoteToPost(postId: ID!, voteType: VoteType): Post!
+  deleteVoteInPost(postId: ID!, voteId: ID!): Post! 
+}
+
+type Subscription {
+  feedSubscription: PostSubscriptionPayload!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  role: UserRole!
+  posts: [Post!]!
+  votes: [Vote!]!
+}

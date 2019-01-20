@@ -1,0 +1,70 @@
+type Post {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isPublished: Boolean! @default(value: "false")
+  slug: String @unique
+  title: String! @unique
+  text: String!
+  author: User!
+  votes: [Vote!]!
+  subCategories: [SubCategory!]!
+  thumbnail: String
+}
+
+type Category {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String! @unique
+  subCategories: [SubCategory!]!
+}
+
+type SubCategory {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String! @unique
+  categories: [Category!]!
+  posts: [Post!]!
+}
+
+type User {
+  id: ID! @unique
+  email: String! @unique
+  emailValidated: Boolean @default(value: false)
+  emailToken: String @unique
+  password: String!
+  resetPasswordToken: String @unique
+  resetPasswordExpire: Float
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  role: UserRole! @default(value: MEMBER)
+  posts: [Post!]!
+  votes: [Vote!]!
+}
+
+type Vote {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User
+  post: Post
+  type: VoteType!
+}
+
+type AppState {
+  defaultSearchValue: String!
+}
+
+enum VoteType {
+  LIKE
+  DISLIKE
+}
+
+enum UserRole {
+  MEMBER
+  EDITOR
+  ADMIN
+}
