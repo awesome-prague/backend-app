@@ -1,5 +1,5 @@
 import * as faker from 'faker'
-import { Prisma } from '../src/generated/prisma'
+import { Prisma } from './generated/prisma'
 
 const db = new Prisma({
   endpoint: process.env.PRISMA_ENDPOINT,
