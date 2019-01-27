@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - '10'
+
+services:
+  - docker
+
+before_script:
+  - docker-compose up -d
+
+script:
+  - npm run test
+  - npm run test:tsc
+  - npm run test:lint

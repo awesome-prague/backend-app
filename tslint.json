@@ -22,5 +22,8 @@
       "allow-pascal-case",
       "allow-leading-underscore"
     ]
+  },
+  "jsRules": {
+    "object-literal-sort-keys": false
   }
 }
