@@ -12,7 +12,7 @@ const users = [
 ]
 
 const contextMock = {
-  db: {
+  prisma: {
     $exists: {
       user: ({ id, role }: { id: string; role: string }) => {
         return Boolean(users.find(item => item.id === id && item.role === role))
