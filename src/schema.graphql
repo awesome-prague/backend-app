@@ -7,7 +7,7 @@ type Query {
   posts: [Post!]!
   welcomePost: Post
   searchCategories(value: String!): [Category!]!
-  appState: AppState
+  appState: AppState!
   me: User
 }
 
@@ -16,7 +16,7 @@ type Mutation {
   signup(email: String!, password: String!, name: String!): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
   forgetPassword(email: String!): User!
-  resetPassword(email: String!): AuthPayload!
+  resetPassword(resetPasswordToken: String!, newPassword: String!): AuthPayload!
   updatePassword(oldPassword: String!, newPassword: String!): User!
   validateEmail(emailToken: String!): User!
 
@@ -25,11 +25,11 @@ type Mutation {
   publishPost(id: ID!): Post!
   deletePost(id: ID!): Post!
   addVoteToPost(postId: ID!, voteType: VoteType): Post!
-  deleteVoteInPost(postId: ID!, voteId: ID!): Post! 
+  deleteVoteInPost(postId: ID!, voteId: ID!): Post!
 }
 
 type Subscription {
-  feedSubscription: PostSubscriptionPayload!
+  posts: Post
 }
 
 type AuthPayload {

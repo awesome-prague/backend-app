@@ -1,60 +1,62 @@
 import * as faker from 'faker'
-import { Prisma } from './generated/prisma'
+import { prisma } from './generated/prisma-client/'
 
-const db = new Prisma({
-  endpoint: process.env.PRISMA_ENDPOINT,
-})
+const db = prisma
 
-const generateUser = async (user) => {
-  return await db.mutation.createUser({
-    data: {
-      name: user.name,
-      email: user.email,
-      // plaintext password: "nooneknows"
-      password: '$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aAdiygJPFzm',
-    },
+const generateUser = async (user: { email: string; name: string }) => {
+  return await db.createUser({
+    email: user.email,
+    name: user.name,
+    // plaintext password: "nooneknows"
+    password: '$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aAdiygJPFzm',
   })
 }
 
-const generateCategories = async ({ title }) => {
-  return await db.mutation.createCategory({
-    data: {
-      title,
+const generateCategories = async ({ title }: { title: string }) => {
+  return await db.createCategory({ title })
+}
+
+const generateSubCategories = async ({
+  title,
+  belongsTo,
+}: {
+  title: string
+  belongsTo: string
+}) => {
+  return await db.createSubCategory({
+    categories: {
+      connect: {
+        title: belongsTo,
+      },
     },
+    title,
   })
 }
 
-const generateSubCategories = async ({ title, belongsTo }) => {
-  return await db.mutation.createSubCategory({
-    data: {
-      title,
-      categories: {
-        connect: {
-          title: belongsTo,
-        },
+const generatePosts = async ({
+  title,
+  email,
+  belongsTo,
+}: {
+  title: string
+  email: string
+  belongsTo: string
+}) => {
+  await db.createPost({
+    author: {
+      connect: {
+        email,
       },
     },
-  })
-}
-
-const generatePosts = async ({ title, email, belongsTo }) => {
-  await db.mutation.createPost({
-    data: {
-      title,
-      text: faker.lorem.sentence(),
-      author: {
-        connect: {
-          email,
-        },
+    title,
+    text: faker.lorem.sentence(),
+    subCategories: {
+      connect: {
+        title: belongsTo,
       },
-      subCategories: {
-        connect: {
-          title: belongsTo,
-        },
-      },
-      isPublished: true,
-      thumbnail: 'http://lorempixel.com/640/480/food/',
     },
+    isPublished: true,
+    thumbnail: 'http://lorempixel.com/640/480/food/',
   })
 }
 
@@ -82,38 +84,38 @@ const seedMe = async () => {
   await generateCategories({ title: 'Sport' })
 
   await generateSubCategories({
+    belongsTo: 'Food',
     title: 'Burgers',
-    belongsTo: 'Food',
   })
   await generateSubCategories({
+    belongsTo: 'Food',
     title: 'Sushi',
-    belongsTo: 'Food',
   })
   await generateSubCategories({
-    title: 'Indian',
     belongsTo: 'Food',
+    title: 'Indian',
   })
 
   const emails = getEmails()
   await generatePosts({
+    belongsTo: 'Burgers',
+    email: emails[0],
     title: 'Dish Burger Bistro',
-    email: emails[0],
-    belongsTo: 'Burgers',
   })
   await generatePosts({
-    title: faker.lorem.words(),
-    email: emails[0],
     belongsTo: 'Burgers',
+    email: emails[0],
+    title: faker.lorem.words(),
   })
   await generatePosts({
-    title: faker.lorem.words(),
-    email: emails[0],
     belongsTo: 'Burgers',
+    email: emails[0],
+    title: faker.lorem.words(),
   })
   await generatePosts({
-    title: faker.lorem.words(),
-    email: emails[0],
     belongsTo: 'Burgers',
+    email: emails[0],
+    title: faker.lorem.words(),
   })
 }
 

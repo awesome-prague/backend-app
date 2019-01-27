@@ -13,15 +13,12 @@ const users = [
 
 const contextMock = {
   db: {
-    exists: {
-      User: ({ id, role }: { id: string; role: string }) => {
-        return Boolean(
-          users.find((item) => item.id === id && item.role === role)
-        )
+    $exists: {
+      user: ({ id, role }: { id: string; role: string }) => {
+        return Boolean(users.find(item => item.id === id && item.role === role))
       },
     },
   },
-  request: () => {},
 }
 
 describe('Utils', () => {

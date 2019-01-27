@@ -1,58 +1,53 @@
-const {forwardTo} = require('prisma-binding')
+import { getUserIdOrThrowError } from '../utils'
+import { QueryResolvers } from '../generated/graphqlgen'
 
-import { getUserIdOrThrowError, Context } from '../utils'
-
-export const Query = {
-  feed(parent, args, ctx: Context, info) {
-    return ctx.db.query.posts({ where: { isPublished: true } }, info)
+export const Query: QueryResolvers.Type = {
+  feed(_parent, _args, ctx) {
+    return ctx.prisma.posts({ where: { isPublished: true } })
   },
 
-  drafts(parent, args, ctx: Context, info) {
+  drafts(_parent, _args, ctx) {
     const id = getUserIdOrThrowError(ctx)
 
     const where = {
       isPublished: false,
       author: {
-        id
-      }
+        id,
+      },
     }
 
-    return ctx.db.query.posts({ where }, info)
+    return ctx.prisma.posts({ where })
   },
 
-  posts(parent, args, ctx: Context, info) {
+  posts(_parent, _args, ctx) {
     const where = {
       isPublished: true,
     }
 
-    return ctx.db.query.posts({ where }, info)
+    return ctx.prisma.posts({ where })
   },
 
-  post(parent, { id }, ctx: Context, info) {
-    return ctx.db.query.post({ where: { id } }, info)
+  post(_parent, { id }, ctx) {
+    return ctx.prisma.post({ id })
   },
 
-  welcomePost(parent, args, ctx: Context, info) {
-    const where = {
-      slug: 'welcome-post',
-    }
-
-    return ctx.db.query.post({ where }, info)
+  welcomePost(_parent, _args, ctx) {
+    return ctx.prisma.post({ slug: 'welcome-post' })
   },
 
-  searchCategories(parent, { value }, ctx: Context, info) {
+  searchCategories(_parent, { value }, ctx) {
     const where = {
       title_contains: value,
     }
-    return ctx.db.query.categories({ where }, info)
+    return ctx.prisma.categories({ where })
   },
 
-  me(parent, args, ctx: Context, info) {
+  me(_parent, _args, ctx) {
     const id = getUserIdOrThrowError(ctx)
-    return ctx.db.query.user({ where: { id } }, info)
+    return ctx.prisma.user({ id })
   },
 
-  appState(parent, args, ctx: Context, info) {
-    return ctx.db.query.appStates({}, info)
+  appState(_parent, _args, ctx) {
+    return ctx.prisma.appState({ id: 1 })
   },
 }

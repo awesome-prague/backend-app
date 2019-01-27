@@ -1,6 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
   "linterOptions": {
     "exclude": ["**/generated/**/*.*"]
   },
@@ -12,7 +12,9 @@
     "no-shadowed-variable": false,
     "interface-name": [true, "never-prefix"],
     "object-literal-sort-keys": false,
+    "no-unused-variable": false,
     "no-console": false,
+    "ordered-imports": false,
     "variable-name": [
       true,
       "ban-keywords",

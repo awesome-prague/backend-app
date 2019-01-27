@@ -6,18 +6,19 @@ datamodel: datamodel.graphql
 
 # Seed your service with initial data based on `seed.graphql`.
 seed:
-  run: yarn ts-node ../src/seed-generator.ts
+  run: yarn ts-node ./src/seed-generator.ts
 
-# Download the GraphQL schema of the Prisma API into
-# `src/generated/prisma.graphql` (as specfied in `.graphqlconfig.yml`).
-# Then generate the corresponding TypeScript definitions into
-# `src/generated/prisma.ts` (also specfied in `.graphqlconfig.yml`)
-# with `graphql codegen` .
 hooks:
   post-deploy:
-    - graphql get-schema --project database
-    - graphql codegen
+    - prisma generate
+
 # If specified, the `secret` must be used to generate a JWT which is attached
 # to the `Authorization` header of HTTP requests made against the Prisma API.
 # Info: https://www.prisma.io/docs/reference/prisma-api/concepts-utee3eiquo#authentication
 # secret: ${env:PRISMA_SECRET}
+
+generate:
+  - generator: typescript-client
+    output: ../src/generated/prisma-client/
+  - generator: graphql-schema
+    output: ../src/generated/

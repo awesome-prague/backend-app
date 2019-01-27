@@ -55,6 +55,7 @@ type Vote {
 }
 
 type AppState {
+  id: ID! @unique
   defaultSearchValue: String!
 }
 

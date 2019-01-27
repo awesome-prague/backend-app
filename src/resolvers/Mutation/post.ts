@@ -1,55 +1,65 @@
-import { getUserIdOrThrowError, isAuthorPostExists, isAdmin, Context } from '../../utils'
+import { getUserIdOrThrowError, isAuthorPostExists, isAdmin } from '../../utils'
+import { MutationResolvers } from '../../generated/graphqlgen'
 
-export const post = {
-  async createDraftPost(parent, { title, text }, ctx: Context, info) {
+type PostMutationResolvers = Pick<
+  MutationResolvers.Type,
+  | 'createDraftPost'
+  | 'publishPost'
+  | 'deletePost'
+  | 'addVoteToPost'
+  | 'deleteVoteInPost'
+>
+
+export const post: PostMutationResolvers = {
+  async createDraftPost(_parent, { title, text }, ctx) {
     const userId = getUserIdOrThrowError(ctx)
-    return ctx.db.mutation.createPost(
-      {
-        data: {
-          title,
-          text,
-          isPublished: false,
-          author: {
-            connect: { id: userId },
-          },
-        },
+    return ctx.prisma.createPost({
+      title,
+      text,
+      isPublished: false,
+      author: {
+        connect: { id: userId },
       },
-      info
-    )
+    })
   },
 
-  async publishPost(parent, { id }, ctx: Context, info) {
+  async publishPost(_parent, { id }, ctx) {
     const userId = getUserIdOrThrowError(ctx)
     const postExists = await isAuthorPostExists(ctx, id, userId)
     const isUserAdmin = await isAdmin(ctx, id)
     if (!postExists && !isUserAdmin) {
-      throw new Error(`Post not found or you don't have access rights to publish it.`)
+      throw new Error(
+        `Post not found or you don't have access rights to publish it.`,
+      )
     }
 
-    return ctx.db.mutation.updatePost(
-      {
-        where: { id },
-        data: { isPublished: true },
-      },
-      info,
-    )
+    return ctx.prisma.updatePost({
+      where: { id },
+      data: { isPublished: true },
+    })
   },
 
-  async deletePost(parent, { id }, ctx: Context, info) {
+  async deletePost(_parent, { id }, ctx) {
     const userId = getUserIdOrThrowError(ctx)
     const postExists = await isAuthorPostExists(ctx, id, userId)
     const isUserAdmin = await isAdmin(ctx, id)
     if (!postExists && !isUserAdmin) {
-      throw new Error(`Post not found or you don't have access rights to delete it.`)
+      throw new Error(
+        `Post not found or you don't have access rights to delete it.`,
+      )
     }
 
-    return ctx.db.mutation.deletePost({ where: { id } })
+    return ctx.prisma.deletePost({ id })
   },
 
-  
-  async addVoteToPost(parent, { postId, voteType }, ctx: Context, info) {
+  async addVoteToPost(_parent, { postId, voteType }, ctx) {
     const userId = getUserIdOrThrowError(ctx)
-    const userVote = await ctx.db.query.votes({
+
+    if (!voteType) {
+      throw new Error(`No VoteType specified.`)
+    }
+
+    const userVote = await ctx.prisma.votes({
       where: {
         user: {
           id: userId,
@@ -57,11 +67,11 @@ export const post = {
         post: {
           id: postId,
         },
-      }
-    }, '{ id }')
+      },
+    })
 
-    const voteId = userVote.length ? userVote[0].id : ""
-    return ctx.db.mutation.updatePost({
+    const voteId = userVote.length ? userVote[0].id : ''
+    return ctx.prisma.updatePost({
       where: { id: postId },
       data: {
         votes: {
@@ -75,34 +85,39 @@ export const post = {
                 connect: {
                   id: userId,
                 },
-              }
+              },
             },
             update: {
               type: voteType,
             },
-          }
-        }
-      }
+          },
+        },
+      },
     })
   },
 
-  async deleteVoteInPost(parent, { postId, voteId }, ctx: Context, info) {
+  async deleteVoteInPost(_parent, { postId, voteId }, ctx) {
     const userId = getUserIdOrThrowError(ctx)
-    const voteExists = await ctx.db.exists.Vote({ id: voteId, user: { id: userId } })
+    const voteExists = await ctx.prisma.$exists.vote({
+      id: voteId,
+      user: { id: userId },
+    })
 
     if (!voteExists) {
-      throw new Error(`Vote not found or you don't have access rights to remove it.`)
+      throw new Error(
+        `Vote not found or you don't have access rights to remove it.`,
+      )
     }
 
-    return ctx.db.mutation.updatePost({
+    return ctx.prisma.updatePost({
       where: { id: postId },
       data: {
         votes: {
           delete: {
-            id: voteId
-          }
-        }
-      }
+            id: voteId,
+          },
+        },
+      },
     })
-  }
+  },
 }

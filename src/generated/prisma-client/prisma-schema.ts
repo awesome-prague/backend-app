@@ -1,4 +1,4 @@
-type AggregateAppState {
+export const typeDefs = /* GraphQL */ `type AggregateAppState {
   count: Int!
 }
 
@@ -1743,3 +1743,4 @@ input VoteWhereInput {
 input VoteWhereUniqueInput {
   id: ID
 }
+`

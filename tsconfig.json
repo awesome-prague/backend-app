@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "noEmit": true,
     "moduleResolution": "node",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "dist",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "baseUrl": ".",
+    "skipLibCheck": true,
     "strict": true,
     "lib": ["esnext", "dom"]
-  }
+  },
+  "exclude": ["node_modules", "**/generated/**/*.*"]
 }
