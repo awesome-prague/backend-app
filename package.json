@@ -23,7 +23,8 @@
     "docker:up": "dotenv -e .env.dev -- docker-compose up -d",
     "docker:up:prod": "dotenv -e .env -- docker-compose up -d prisma",
     "docker:down": "docker-compose down",
-    "prisma:deploy:dev": "dotenv -e .env.dev -- prisma deploy",
+    "prisma:deploy": "dotenv -e .env.dev -- prisma deploy",
+    "prisma:deploy:prod": "dotenv -e .env -- prisma deploy",
     "prisma:introspect": "dotenv -e .env.dev -- prisma introspect"
   },
   "dependencies": {
