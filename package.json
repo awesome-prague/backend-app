@@ -15,7 +15,7 @@
     "debug": "dotenv -e .env.dev -- nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
     "playground": "graphql playground",
     "build": "rimraf dist && tsc",
-    "test": "jest",
+    "test": "dotenv -e .env.dev -- jest",
     "test:lint": "tslint -p .",
     "test:lint:fix": "tslint -p . --fix",
     "test:tsc": "tsc --project tsconfig.json",

@@ -1,4 +1,5 @@
 import * as utils from '../utils'
+import { getUserIdOrThrowError } from '../utils'
 
 const users = [
   {
@@ -30,5 +31,22 @@ describe('Utils', () => {
     // @ts-ignore
     const isAdmin = await utils.isAdmin(contextMock, '2')
     expect(isAdmin).toBe(false)
+  })
+
+  it('should throw an error for unauthorized user', () => {
+    const jwtToken = ''
+    const ctx = { ...contextMock, request: { get: () => jwtToken } }
+
+    expect(() => {
+      getUserIdOrThrowError(ctx as any)
+    }).toThrow('Not authorized')
+  })
+
+  it('should return user id', () => {
+    const jwtToken = process.env.TESTING_JWT_TOKEN
+
+    const ctx = { ...contextMock, request: { get: () => jwtToken } }
+
+    expect(getUserIdOrThrowError(ctx as any)).toBe(process.env.TESTING_USER_ID)
   })
 })
