@@ -6,16 +6,25 @@
     "node": "10.x.x"
   },
   "scripts": {
-    "start": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
-    "dev": "npm-run-all --parallel start playground",
-    "debug": "dotenv -- nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
+    "start": "dotenv -e .env.dev -- yarn boot",
+    "start:prod": "dotenv -e .env -- yarn boot",
+    "start:dev": "dotenv -e .env.dev -- yarn dev",
+    "start:dev:prod": "dotenv -e .env -- yarn dev",
+    "boot": "nodemon -e ts,graphql -x ts-node src/index.ts",
+    "dev": "npm-run-all --parallel boot playground",
+    "debug": "dotenv -e .env.dev -- nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
     "playground": "graphql playground",
     "build": "rimraf dist && tsc",
     "test": "jest",
     "test:lint": "tslint -p .",
     "test:lint:fix": "tslint -p . --fix",
     "test:tsc": "tsc --project tsconfig.json",
-    "gen": "prisma generate;graphqlgen"
+    "gen": "prisma generate; graphqlgen",
+    "docker:up": "dotenv -e .env.dev -- docker-compose up -d",
+    "docker:up:prod": "dotenv -e .env -- docker-compose up -d prisma",
+    "docker:down": "docker-compose down",
+    "prisma:deploy:dev": "dotenv -e .env.dev -- prisma deploy",
+    "prisma:introspect": "dotenv -e .env.dev -- prisma introspect"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",

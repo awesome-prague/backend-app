@@ -6,7 +6,7 @@ const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
   // @ts-ignore Wrong types
   resolvers,
-  context: (req) => ({
+  context: req => ({
     ...req,
     prisma,
   }),
