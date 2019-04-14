@@ -1,7 +1,11 @@
 import * as faker from 'faker'
 import { prisma } from './generated/prisma-client/'
+import { VoteType } from './generated/graphqlgen'
 
 const db = prisma
+
+const randomPick = <T>(arr: Array<T>) =>
+  arr[Math.floor(Math.random() * arr.length)]
 
 const generateUser = async (user: { email: string; name: string }) => {
   return await db.createUser({
@@ -76,6 +80,30 @@ const generateMultipleUsers = async () => {
   }
 }
 
+const generateVotes = async ({
+  email,
+  postTitle,
+  type,
+}: {
+  email: string
+  postTitle: string
+  type: VoteType
+}) => {
+  await db.createVote({
+    type,
+    post: {
+      connect: {
+        title: postTitle,
+      },
+    },
+    user: {
+      connect: {
+        email,
+      },
+    },
+  })
+}
+
 const seedMe = async () => {
   await generateMultipleUsers()
 
@@ -97,25 +125,66 @@ const seedMe = async () => {
   })
 
   const emails = getEmails()
+  const randomPostTitles = Array(10)
+    .fill(1)
+    .map(() => faker.lorem.words())
   await generatePosts({
     belongsTo: 'Burgers',
-    email: emails[0],
+    email: randomPick(emails),
     title: 'Dish Burger Bistro',
   })
   await generatePosts({
     belongsTo: 'Burgers',
-    email: emails[0],
-    title: faker.lorem.words(),
+    email: randomPick(emails),
+    title: randomPostTitles[0],
   })
   await generatePosts({
     belongsTo: 'Burgers',
-    email: emails[0],
-    title: faker.lorem.words(),
+    email: randomPick(emails),
+    title: randomPostTitles[1],
   })
   await generatePosts({
     belongsTo: 'Burgers',
-    email: emails[0],
-    title: faker.lorem.words(),
+    email: randomPick(emails),
+    title: randomPostTitles[2],
+  })
+
+  await generateVotes({
+    email: randomPick(emails),
+    postTitle: 'Dish Burger Bistro',
+    type: 'LIKE',
+  })
+  await generateVotes({
+    email: randomPick(emails),
+    postTitle: 'Dish Burger Bistro',
+    type: 'LIKE',
+  })
+  await generateVotes({
+    email: randomPick(emails),
+    postTitle: 'Dish Burger Bistro',
+    type: 'LIKE',
+  })
+
+  await generateVotes({
+    email: randomPick(emails),
+    postTitle: randomPostTitles[0],
+    type: 'LIKE',
+  })
+  await generateVotes({
+    email: randomPick(emails),
+    postTitle: randomPostTitles[0],
+    type: 'LIKE',
+  })
+
+  await generateVotes({
+    email: randomPick(emails),
+    postTitle: randomPostTitles[1],
+    type: 'LIKE',
+  })
+  await generateVotes({
+    email: randomPick(emails),
+    postTitle: randomPostTitles[1],
+    type: 'DISLIKE',
   })
 }
 
