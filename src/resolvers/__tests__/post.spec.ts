@@ -3,7 +3,7 @@ import * as allResolvers from '../index'
 
 const resolvers = allResolvers.default
 
-test.skip("creating draft post won't work for unauthorized", async () => {
+test("creating draft post won't work for unauthorized", async () => {
   const parent = undefined
   const args = {
     text: 'some text',

@@ -41,7 +41,7 @@ export const Query: QueryResolvers.Type = {
 
   async search(_parent, { value }, ctx) {
     const where = {
-      normalizeTitle_contains: value,
+      normalizeTitle_contains: value.toLocaleLowerCase(),
     }
     const [posts, subCategories, categories] = await Promise.all([
       ctx.prisma.posts({ where }),

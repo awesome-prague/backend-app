@@ -532,7 +532,7 @@ export namespace QueryResolvers {
     args: ArgsSearch,
     ctx: Context,
     info: GraphQLResolveInfo,
-  ) => SearchResults | null | Promise<SearchResults | null>
+  ) => SearchResults | Promise<SearchResults>
 
   export type AppStateResolver = (
     parent: undefined,
@@ -596,7 +596,7 @@ export namespace QueryResolvers {
       args: ArgsSearch,
       ctx: Context,
       info: GraphQLResolveInfo,
-    ) => SearchResults | null | Promise<SearchResults | null>
+    ) => SearchResults | Promise<SearchResults>
 
     appState: (
       parent: undefined,
@@ -2482,21 +2482,21 @@ export namespace SearchResultsResolvers {
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo,
-  ) => Array<Post | null> | Promise<Array<Post | null>>
+  ) => Post[] | Promise<Post[]>
 
   export type SubCategoriesResolver = (
     parent: SearchResults,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo,
-  ) => Array<SubCategory | null> | Promise<Array<SubCategory | null>>
+  ) => SubCategory[] | Promise<SubCategory[]>
 
   export type CategoriesResolver = (
     parent: SearchResults,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo,
-  ) => Array<Category | null> | Promise<Array<Category | null>>
+  ) => Category[] | Promise<Category[]>
 
   export interface Type {
     posts: (
@@ -2504,21 +2504,21 @@ export namespace SearchResultsResolvers {
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo,
-    ) => Array<Post | null> | Promise<Array<Post | null>>
+    ) => Post[] | Promise<Post[]>
 
     subCategories: (
       parent: SearchResults,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo,
-    ) => Array<SubCategory | null> | Promise<Array<SubCategory | null>>
+    ) => SubCategory[] | Promise<SubCategory[]>
 
     categories: (
       parent: SearchResults,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo,
-    ) => Array<Category | null> | Promise<Array<Category | null>>
+    ) => Category[] | Promise<Category[]>
   }
 }
 

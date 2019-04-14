@@ -1,5 +1,11 @@
 import * as jwt from 'jsonwebtoken'
-import { Prisma, User } from './generated/prisma-client/'
+import {
+  Prisma,
+  User,
+  Post,
+  Category,
+  SubCategory,
+} from './generated/prisma-client/'
 
 export interface Context {
   prisma: Prisma
@@ -15,7 +21,11 @@ export interface VoteSummary {
   dislikes: number | null
 }
 
-export interface SearchResults {}
+export interface SearchResults {
+  posts: Post[]
+  subCategories: SubCategory[]
+  categories: Category[]
+}
 
 export function getUserIdOrThrowError(ctx: Context) {
   const Authorization = ctx.request.get('Authorization')

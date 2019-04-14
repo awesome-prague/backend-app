@@ -15,7 +15,7 @@ type Query {
   ): [Post!]!
   welcomePost: Post
   subCategories: [SubCategory!]!
-  search(value: String!): SearchResults
+  search(value: String!): SearchResults!
   appState: AppState!
   me: User
 }
@@ -91,7 +91,7 @@ type VoteSummary {
 }
 
 type SearchResults {
-  posts: [Post]!
-  subCategories: [SubCategory]!
-  categories: [Category]!
+  posts: [Post!]!
+  subCategories: [SubCategory!]!
+  categories: [Category!]!
 }
