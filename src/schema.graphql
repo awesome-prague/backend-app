@@ -1,10 +1,18 @@
-# import Post, Vote, VoteType, UserRole, Category, AppState from "./generated/prisma.graphql"
+# import Post, Vote, VoteType, UserRole, Category, AppState, PostWhereInput, PostOrderByInput, VoteWhereInput, VoteOrderByInput, SubCategoryWhereInput, SubCategoryOrderByInput  from "./generated/prisma.graphql"
 
 type Query {
   feed: [Post!]!
   drafts: [Post!]!
   post(id: ID!): Post
-  posts: [Post!]!
+  posts(
+    where: PostWhereInput
+    orderBy: PostOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Post]!
   welcomePost: Post
   searchCategories(value: String!): [Category!]!
   appState: AppState!
@@ -44,4 +52,40 @@ type User {
   role: UserRole!
   posts: [Post!]!
   votes: [Vote!]!
+}
+
+type Post {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isPublished: Boolean!
+  slug: String
+  title: String!
+  text: String!
+  author: User!
+  votes(
+    where: VoteWhereInput
+    orderBy: VoteOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Vote!]
+  subCategories(
+    where: SubCategoryWhereInput
+    orderBy: SubCategoryOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [SubCategory!]
+  thumbnail: String
+  VoteSummary: VoteSummary
+}
+
+type VoteSummary {
+  likes: Int
+  dislikes: Int
 }

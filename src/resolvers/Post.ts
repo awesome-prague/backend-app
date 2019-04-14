@@ -16,7 +16,7 @@ export const Post: PostResolvers.Type = {
     return ctx.prisma.post({ id: _parent.id }).subCategories()
   },
 
-  async votesSummary(_parent, _arg, ctx) {
+  async VoteSummary(_parent, _arg, ctx) {
     const voteTypeSum = (type: VoteType) => {
       return ctx.prisma
         .votesConnection({

@@ -9,7 +9,7 @@ import {
   Category,
   AppState,
 } from './prisma-client'
-import { VotesSummary, AuthPayload, Context } from '../utils'
+import { VoteSummary, AuthPayload, Context } from '../utils'
 
 export type UserRole = 'MEMBER' | 'EDITOR' | 'ADMIN'
 export type VoteType = 'LIKE' | 'DISLIKE'
@@ -1052,12 +1052,12 @@ export namespace PostResolvers {
     info: GraphQLResolveInfo,
   ) => string | null | Promise<string | null>
 
-  export type VotesSummaryResolver = (
+  export type VoteSummaryResolver = (
     parent: Post,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo,
-  ) => VotesSummary | null | Promise<VotesSummary | null>
+  ) => VoteSummary | null | Promise<VoteSummary | null>
 
   export interface Type {
     id: (
@@ -1137,12 +1137,12 @@ export namespace PostResolvers {
       info: GraphQLResolveInfo,
     ) => string | null | Promise<string | null>
 
-    votesSummary: (
+    VoteSummary: (
       parent: Post,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo,
-    ) => VotesSummary | null | Promise<VotesSummary | null>
+    ) => VoteSummary | null | Promise<VoteSummary | null>
   }
 }
 
@@ -2290,23 +2290,23 @@ export namespace CategoryResolvers {
   }
 }
 
-export namespace VotesSummaryResolvers {
+export namespace VoteSummaryResolvers {
   export const defaultResolvers = {
-    likes: (parent: VotesSummary) =>
+    likes: (parent: VoteSummary) =>
       parent.likes === undefined ? null : parent.likes,
-    dislikes: (parent: VotesSummary) =>
+    dislikes: (parent: VoteSummary) =>
       parent.dislikes === undefined ? null : parent.dislikes,
   }
 
   export type LikesResolver = (
-    parent: VotesSummary,
+    parent: VoteSummary,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo,
   ) => number | null | Promise<number | null>
 
   export type DislikesResolver = (
-    parent: VotesSummary,
+    parent: VoteSummary,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo,
@@ -2314,14 +2314,14 @@ export namespace VotesSummaryResolvers {
 
   export interface Type {
     likes: (
-      parent: VotesSummary,
+      parent: VoteSummary,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo,
     ) => number | null | Promise<number | null>
 
     dislikes: (
-      parent: VotesSummary,
+      parent: VoteSummary,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo,
@@ -2658,7 +2658,7 @@ export interface Resolvers {
   Vote: VoteResolvers.Type
   SubCategory: SubCategoryResolvers.Type
   Category: CategoryResolvers.Type
-  VotesSummary: VotesSummaryResolvers.Type
+  VoteSummary: VoteSummaryResolvers.Type
   AppState: AppStateResolvers.Type
   Mutation: MutationResolvers.Type
   AuthPayload: AuthPayloadResolvers.Type
