@@ -15,4 +15,7 @@ export const Post: PostResolvers.Type = {
   subCategories: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
+  VoteSummary: (parent, args, ctx) => {
+    throw new Error('Resolver not implemented')
+  },
 }

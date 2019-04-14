@@ -10,6 +10,11 @@ export interface AuthPayload {
   user: User
 }
 
+export interface VoteSummary {
+  likes: number | null
+  dislikes: number | null
+}
+
 export function getUserIdOrThrowError(ctx: Context) {
   const Authorization = ctx.request.get('Authorization')
   if (Authorization) {
