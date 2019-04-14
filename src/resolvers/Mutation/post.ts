@@ -15,6 +15,7 @@ export const post: PostMutationResolvers = {
     const userId = getUserIdOrThrowError(ctx)
     return ctx.prisma.createPost({
       title,
+      normalizeTitle: title.toLocaleLowerCase(),
       text,
       isPublished: false,
       author: {

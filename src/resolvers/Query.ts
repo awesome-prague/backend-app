@@ -32,14 +32,28 @@ export const Query: QueryResolvers.Type = {
   },
 
   welcomePost(_parent, _args, ctx) {
-    return ctx.prisma.post({ slug: 'welcome-post' })
+    return ctx.prisma.post({ normalizeTitle: 'welcome post' })
   },
 
-  searchCategories(_parent, { value }, ctx) {
+  subCategories(_parent, _args, ctx) {
+    return ctx.prisma.subCategories()
+  },
+
+  async search(_parent, { value }, ctx) {
     const where = {
-      title_contains: value,
+      normalizeTitle_contains: value,
     }
-    return ctx.prisma.categories({ where })
+    const [posts, subCategories, categories] = await Promise.all([
+      ctx.prisma.posts({ where }),
+      ctx.prisma.subCategories({ where }),
+      ctx.prisma.categories({ where }),
+    ])
+
+    return {
+      posts,
+      subCategories,
+      categories,
+    }
   },
 
   me(_parent, _args, ctx) {

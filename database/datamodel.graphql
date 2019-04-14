@@ -3,8 +3,8 @@ type Post {
   createdAt: DateTime!
   updatedAt: DateTime!
   isPublished: Boolean! @default(value: "false")
-  slug: String @unique
   title: String! @unique
+  normalizeTitle: String! @unique
   text: String!
   author: User!
   votes: [Vote!]!
@@ -17,6 +17,7 @@ type Category {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String! @unique
+  normalizeTitle: String! @unique
   subCategories: [SubCategory!]!
 }
 
@@ -25,6 +26,7 @@ type SubCategory {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String! @unique
+  normalizeTitle: String! @unique
   categories: [Category!]!
   posts: [Post!]!
 }

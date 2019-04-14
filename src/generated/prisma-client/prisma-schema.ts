@@ -135,6 +135,7 @@ type Category {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
+  normalizeTitle: String!
   subCategories(where: SubCategoryWhereInput, orderBy: SubCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SubCategory!]
 }
 
@@ -146,6 +147,7 @@ type CategoryConnection {
 
 input CategoryCreateInput {
   title: String!
+  normalizeTitle: String!
   subCategories: SubCategoryCreateManyWithoutCategoriesInput
 }
 
@@ -156,6 +158,7 @@ input CategoryCreateManyWithoutSubCategoriesInput {
 
 input CategoryCreateWithoutSubCategoriesInput {
   title: String!
+  normalizeTitle: String!
 }
 
 type CategoryEdge {
@@ -172,6 +175,8 @@ enum CategoryOrderByInput {
   updatedAt_DESC
   title_ASC
   title_DESC
+  normalizeTitle_ASC
+  normalizeTitle_DESC
 }
 
 type CategoryPreviousValues {
@@ -179,6 +184,7 @@ type CategoryPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
+  normalizeTitle: String!
 }
 
 input CategoryScalarWhereInput {
@@ -226,6 +232,20 @@ input CategoryScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  normalizeTitle: String
+  normalizeTitle_not: String
+  normalizeTitle_in: [String!]
+  normalizeTitle_not_in: [String!]
+  normalizeTitle_lt: String
+  normalizeTitle_lte: String
+  normalizeTitle_gt: String
+  normalizeTitle_gte: String
+  normalizeTitle_contains: String
+  normalizeTitle_not_contains: String
+  normalizeTitle_starts_with: String
+  normalizeTitle_not_starts_with: String
+  normalizeTitle_ends_with: String
+  normalizeTitle_not_ends_with: String
   AND: [CategoryScalarWhereInput!]
   OR: [CategoryScalarWhereInput!]
   NOT: [CategoryScalarWhereInput!]
@@ -251,15 +271,18 @@ input CategorySubscriptionWhereInput {
 
 input CategoryUpdateInput {
   title: String
+  normalizeTitle: String
   subCategories: SubCategoryUpdateManyWithoutCategoriesInput
 }
 
 input CategoryUpdateManyDataInput {
   title: String
+  normalizeTitle: String
 }
 
 input CategoryUpdateManyMutationInput {
   title: String
+  normalizeTitle: String
 }
 
 input CategoryUpdateManyWithoutSubCategoriesInput {
@@ -281,6 +304,7 @@ input CategoryUpdateManyWithWhereNestedInput {
 
 input CategoryUpdateWithoutSubCategoriesDataInput {
   title: String
+  normalizeTitle: String
 }
 
 input CategoryUpdateWithWhereUniqueWithoutSubCategoriesInput {
@@ -339,6 +363,20 @@ input CategoryWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  normalizeTitle: String
+  normalizeTitle_not: String
+  normalizeTitle_in: [String!]
+  normalizeTitle_not_in: [String!]
+  normalizeTitle_lt: String
+  normalizeTitle_lte: String
+  normalizeTitle_gt: String
+  normalizeTitle_gte: String
+  normalizeTitle_contains: String
+  normalizeTitle_not_contains: String
+  normalizeTitle_starts_with: String
+  normalizeTitle_not_starts_with: String
+  normalizeTitle_ends_with: String
+  normalizeTitle_not_ends_with: String
   subCategories_every: SubCategoryWhereInput
   subCategories_some: SubCategoryWhereInput
   subCategories_none: SubCategoryWhereInput
@@ -350,6 +388,7 @@ input CategoryWhereInput {
 input CategoryWhereUniqueInput {
   id: ID
   title: String
+  normalizeTitle: String
 }
 
 scalar DateTime
@@ -417,8 +456,8 @@ type Post {
   createdAt: DateTime!
   updatedAt: DateTime!
   isPublished: Boolean!
-  slug: String
   title: String!
+  normalizeTitle: String!
   text: String!
   author: User!
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
@@ -434,8 +473,8 @@ type PostConnection {
 
 input PostCreateInput {
   isPublished: Boolean
-  slug: String
   title: String!
+  normalizeTitle: String!
   text: String!
   author: UserCreateOneWithoutPostsInput!
   votes: VoteCreateManyWithoutPostInput
@@ -460,8 +499,8 @@ input PostCreateOneWithoutVotesInput {
 
 input PostCreateWithoutAuthorInput {
   isPublished: Boolean
-  slug: String
   title: String!
+  normalizeTitle: String!
   text: String!
   votes: VoteCreateManyWithoutPostInput
   subCategories: SubCategoryCreateManyWithoutPostsInput
@@ -470,8 +509,8 @@ input PostCreateWithoutAuthorInput {
 
 input PostCreateWithoutSubCategoriesInput {
   isPublished: Boolean
-  slug: String
   title: String!
+  normalizeTitle: String!
   text: String!
   author: UserCreateOneWithoutPostsInput!
   votes: VoteCreateManyWithoutPostInput
@@ -480,8 +519,8 @@ input PostCreateWithoutSubCategoriesInput {
 
 input PostCreateWithoutVotesInput {
   isPublished: Boolean
-  slug: String
   title: String!
+  normalizeTitle: String!
   text: String!
   author: UserCreateOneWithoutPostsInput!
   subCategories: SubCategoryCreateManyWithoutPostsInput
@@ -502,10 +541,10 @@ enum PostOrderByInput {
   updatedAt_DESC
   isPublished_ASC
   isPublished_DESC
-  slug_ASC
-  slug_DESC
   title_ASC
   title_DESC
+  normalizeTitle_ASC
+  normalizeTitle_DESC
   text_ASC
   text_DESC
   thumbnail_ASC
@@ -517,8 +556,8 @@ type PostPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   isPublished: Boolean!
-  slug: String
   title: String!
+  normalizeTitle: String!
   text: String!
   thumbnail: String
 }
@@ -556,20 +595,6 @@ input PostScalarWhereInput {
   updatedAt_gte: DateTime
   isPublished: Boolean
   isPublished_not: Boolean
-  slug: String
-  slug_not: String
-  slug_in: [String!]
-  slug_not_in: [String!]
-  slug_lt: String
-  slug_lte: String
-  slug_gt: String
-  slug_gte: String
-  slug_contains: String
-  slug_not_contains: String
-  slug_starts_with: String
-  slug_not_starts_with: String
-  slug_ends_with: String
-  slug_not_ends_with: String
   title: String
   title_not: String
   title_in: [String!]
@@ -584,6 +609,20 @@ input PostScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  normalizeTitle: String
+  normalizeTitle_not: String
+  normalizeTitle_in: [String!]
+  normalizeTitle_not_in: [String!]
+  normalizeTitle_lt: String
+  normalizeTitle_lte: String
+  normalizeTitle_gt: String
+  normalizeTitle_gte: String
+  normalizeTitle_contains: String
+  normalizeTitle_not_contains: String
+  normalizeTitle_starts_with: String
+  normalizeTitle_not_starts_with: String
+  normalizeTitle_ends_with: String
+  normalizeTitle_not_ends_with: String
   text: String
   text_not: String
   text_in: [String!]
@@ -637,8 +676,8 @@ input PostSubscriptionWhereInput {
 
 input PostUpdateInput {
   isPublished: Boolean
-  slug: String
   title: String
+  normalizeTitle: String
   text: String
   author: UserUpdateOneRequiredWithoutPostsInput
   votes: VoteUpdateManyWithoutPostInput
@@ -648,16 +687,16 @@ input PostUpdateInput {
 
 input PostUpdateManyDataInput {
   isPublished: Boolean
-  slug: String
   title: String
+  normalizeTitle: String
   text: String
   thumbnail: String
 }
 
 input PostUpdateManyMutationInput {
   isPublished: Boolean
-  slug: String
   title: String
+  normalizeTitle: String
   text: String
   thumbnail: String
 }
@@ -702,8 +741,8 @@ input PostUpdateOneWithoutVotesInput {
 
 input PostUpdateWithoutAuthorDataInput {
   isPublished: Boolean
-  slug: String
   title: String
+  normalizeTitle: String
   text: String
   votes: VoteUpdateManyWithoutPostInput
   subCategories: SubCategoryUpdateManyWithoutPostsInput
@@ -712,8 +751,8 @@ input PostUpdateWithoutAuthorDataInput {
 
 input PostUpdateWithoutSubCategoriesDataInput {
   isPublished: Boolean
-  slug: String
   title: String
+  normalizeTitle: String
   text: String
   author: UserUpdateOneRequiredWithoutPostsInput
   votes: VoteUpdateManyWithoutPostInput
@@ -722,8 +761,8 @@ input PostUpdateWithoutSubCategoriesDataInput {
 
 input PostUpdateWithoutVotesDataInput {
   isPublished: Boolean
-  slug: String
   title: String
+  normalizeTitle: String
   text: String
   author: UserUpdateOneRequiredWithoutPostsInput
   subCategories: SubCategoryUpdateManyWithoutPostsInput
@@ -790,20 +829,6 @@ input PostWhereInput {
   updatedAt_gte: DateTime
   isPublished: Boolean
   isPublished_not: Boolean
-  slug: String
-  slug_not: String
-  slug_in: [String!]
-  slug_not_in: [String!]
-  slug_lt: String
-  slug_lte: String
-  slug_gt: String
-  slug_gte: String
-  slug_contains: String
-  slug_not_contains: String
-  slug_starts_with: String
-  slug_not_starts_with: String
-  slug_ends_with: String
-  slug_not_ends_with: String
   title: String
   title_not: String
   title_in: [String!]
@@ -818,6 +843,20 @@ input PostWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  normalizeTitle: String
+  normalizeTitle_not: String
+  normalizeTitle_in: [String!]
+  normalizeTitle_not_in: [String!]
+  normalizeTitle_lt: String
+  normalizeTitle_lte: String
+  normalizeTitle_gt: String
+  normalizeTitle_gte: String
+  normalizeTitle_contains: String
+  normalizeTitle_not_contains: String
+  normalizeTitle_starts_with: String
+  normalizeTitle_not_starts_with: String
+  normalizeTitle_ends_with: String
+  normalizeTitle_not_ends_with: String
   text: String
   text_not: String
   text_in: [String!]
@@ -860,8 +899,8 @@ input PostWhereInput {
 
 input PostWhereUniqueInput {
   id: ID
-  slug: String
   title: String
+  normalizeTitle: String
 }
 
 type Query {
@@ -891,6 +930,7 @@ type SubCategory {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
+  normalizeTitle: String!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
 }
@@ -903,6 +943,7 @@ type SubCategoryConnection {
 
 input SubCategoryCreateInput {
   title: String!
+  normalizeTitle: String!
   categories: CategoryCreateManyWithoutSubCategoriesInput
   posts: PostCreateManyWithoutSubCategoriesInput
 }
@@ -919,11 +960,13 @@ input SubCategoryCreateManyWithoutPostsInput {
 
 input SubCategoryCreateWithoutCategoriesInput {
   title: String!
+  normalizeTitle: String!
   posts: PostCreateManyWithoutSubCategoriesInput
 }
 
 input SubCategoryCreateWithoutPostsInput {
   title: String!
+  normalizeTitle: String!
   categories: CategoryCreateManyWithoutSubCategoriesInput
 }
 
@@ -941,6 +984,8 @@ enum SubCategoryOrderByInput {
   updatedAt_DESC
   title_ASC
   title_DESC
+  normalizeTitle_ASC
+  normalizeTitle_DESC
 }
 
 type SubCategoryPreviousValues {
@@ -948,6 +993,7 @@ type SubCategoryPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
+  normalizeTitle: String!
 }
 
 input SubCategoryScalarWhereInput {
@@ -995,6 +1041,20 @@ input SubCategoryScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  normalizeTitle: String
+  normalizeTitle_not: String
+  normalizeTitle_in: [String!]
+  normalizeTitle_not_in: [String!]
+  normalizeTitle_lt: String
+  normalizeTitle_lte: String
+  normalizeTitle_gt: String
+  normalizeTitle_gte: String
+  normalizeTitle_contains: String
+  normalizeTitle_not_contains: String
+  normalizeTitle_starts_with: String
+  normalizeTitle_not_starts_with: String
+  normalizeTitle_ends_with: String
+  normalizeTitle_not_ends_with: String
   AND: [SubCategoryScalarWhereInput!]
   OR: [SubCategoryScalarWhereInput!]
   NOT: [SubCategoryScalarWhereInput!]
@@ -1020,16 +1080,19 @@ input SubCategorySubscriptionWhereInput {
 
 input SubCategoryUpdateInput {
   title: String
+  normalizeTitle: String
   categories: CategoryUpdateManyWithoutSubCategoriesInput
   posts: PostUpdateManyWithoutSubCategoriesInput
 }
 
 input SubCategoryUpdateManyDataInput {
   title: String
+  normalizeTitle: String
 }
 
 input SubCategoryUpdateManyMutationInput {
   title: String
+  normalizeTitle: String
 }
 
 input SubCategoryUpdateManyWithoutCategoriesInput {
@@ -1063,11 +1126,13 @@ input SubCategoryUpdateManyWithWhereNestedInput {
 
 input SubCategoryUpdateWithoutCategoriesDataInput {
   title: String
+  normalizeTitle: String
   posts: PostUpdateManyWithoutSubCategoriesInput
 }
 
 input SubCategoryUpdateWithoutPostsDataInput {
   title: String
+  normalizeTitle: String
   categories: CategoryUpdateManyWithoutSubCategoriesInput
 }
 
@@ -1138,6 +1203,20 @@ input SubCategoryWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  normalizeTitle: String
+  normalizeTitle_not: String
+  normalizeTitle_in: [String!]
+  normalizeTitle_not_in: [String!]
+  normalizeTitle_lt: String
+  normalizeTitle_lte: String
+  normalizeTitle_gt: String
+  normalizeTitle_gte: String
+  normalizeTitle_contains: String
+  normalizeTitle_not_contains: String
+  normalizeTitle_starts_with: String
+  normalizeTitle_not_starts_with: String
+  normalizeTitle_ends_with: String
+  normalizeTitle_not_ends_with: String
   categories_every: CategoryWhereInput
   categories_some: CategoryWhereInput
   categories_none: CategoryWhereInput
@@ -1152,6 +1231,7 @@ input SubCategoryWhereInput {
 input SubCategoryWhereUniqueInput {
   id: ID
   title: String
+  normalizeTitle: String
 }
 
 type Subscription {

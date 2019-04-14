@@ -9,7 +9,7 @@ import {
   Category,
   AppState,
 } from './prisma-client'
-import { VoteSummary, AuthPayload, Context } from '../utils'
+import { VoteSummary, SearchResults, AuthPayload, Context } from '../utils'
 
 export type UserRole = 'MEMBER' | 'EDITOR' | 'ADMIN'
 export type VoteType = 'LIKE' | 'DISLIKE'
@@ -31,6 +31,8 @@ export type SubCategoryOrderByInput =
   | 'updatedAt_DESC'
   | 'title_ASC'
   | 'title_DESC'
+  | 'normalizeTitle_ASC'
+  | 'normalizeTitle_DESC'
 export type CategoryOrderByInput =
   | 'id_ASC'
   | 'id_DESC'
@@ -40,6 +42,8 @@ export type CategoryOrderByInput =
   | 'updatedAt_DESC'
   | 'title_ASC'
   | 'title_DESC'
+  | 'normalizeTitle_ASC'
+  | 'normalizeTitle_DESC'
 export type PostOrderByInput =
   | 'id_ASC'
   | 'id_DESC'
@@ -49,10 +53,10 @@ export type PostOrderByInput =
   | 'updatedAt_DESC'
   | 'isPublished_ASC'
   | 'isPublished_DESC'
-  | 'slug_ASC'
-  | 'slug_DESC'
   | 'title_ASC'
   | 'title_DESC'
+  | 'normalizeTitle_ASC'
+  | 'normalizeTitle_DESC'
   | 'text_ASC'
   | 'text_DESC'
   | 'thumbnail_ASC'
@@ -94,20 +98,6 @@ export namespace QueryResolvers {
     updatedAt_gte?: string | null
     isPublished?: boolean | null
     isPublished_not?: boolean | null
-    slug?: string | null
-    slug_not?: string | null
-    slug_in?: string[] | null
-    slug_not_in?: string[] | null
-    slug_lt?: string | null
-    slug_lte?: string | null
-    slug_gt?: string | null
-    slug_gte?: string | null
-    slug_contains?: string | null
-    slug_not_contains?: string | null
-    slug_starts_with?: string | null
-    slug_not_starts_with?: string | null
-    slug_ends_with?: string | null
-    slug_not_ends_with?: string | null
     title?: string | null
     title_not?: string | null
     title_in?: string[] | null
@@ -122,6 +112,20 @@ export namespace QueryResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     text?: string | null
     text_not?: string | null
     text_in?: string[] | null
@@ -372,6 +376,20 @@ export namespace QueryResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     categories_every?: CategoryWhereInput | null
     categories_some?: CategoryWhereInput | null
     categories_none?: CategoryWhereInput | null
@@ -427,6 +445,20 @@ export namespace QueryResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     subCategories_every?: SubCategoryWhereInput | null
     subCategories_some?: SubCategoryWhereInput | null
     subCategories_none?: SubCategoryWhereInput | null
@@ -449,7 +481,7 @@ export namespace QueryResolvers {
     last?: number | null
   }
 
-  export interface ArgsSearchCategories {
+  export interface ArgsSearch {
     value: string
   }
 
@@ -479,7 +511,7 @@ export namespace QueryResolvers {
     args: ArgsPosts,
     ctx: Context,
     info: GraphQLResolveInfo,
-  ) => Array<Post | null> | Promise<Array<Post | null>>
+  ) => Post[] | Promise<Post[]>
 
   export type WelcomePostResolver = (
     parent: undefined,
@@ -488,12 +520,19 @@ export namespace QueryResolvers {
     info: GraphQLResolveInfo,
   ) => Post | null | Promise<Post | null>
 
-  export type SearchCategoriesResolver = (
+  export type SubCategoriesResolver = (
     parent: undefined,
-    args: ArgsSearchCategories,
+    args: {},
     ctx: Context,
     info: GraphQLResolveInfo,
-  ) => Category[] | Promise<Category[]>
+  ) => SubCategory[] | Promise<SubCategory[]>
+
+  export type SearchResolver = (
+    parent: undefined,
+    args: ArgsSearch,
+    ctx: Context,
+    info: GraphQLResolveInfo,
+  ) => SearchResults | null | Promise<SearchResults | null>
 
   export type AppStateResolver = (
     parent: undefined,
@@ -536,7 +575,7 @@ export namespace QueryResolvers {
       args: ArgsPosts,
       ctx: Context,
       info: GraphQLResolveInfo,
-    ) => Array<Post | null> | Promise<Array<Post | null>>
+    ) => Post[] | Promise<Post[]>
 
     welcomePost: (
       parent: undefined,
@@ -545,12 +584,19 @@ export namespace QueryResolvers {
       info: GraphQLResolveInfo,
     ) => Post | null | Promise<Post | null>
 
-    searchCategories: (
+    subCategories: (
       parent: undefined,
-      args: ArgsSearchCategories,
+      args: {},
       ctx: Context,
       info: GraphQLResolveInfo,
-    ) => Category[] | Promise<Category[]>
+    ) => SubCategory[] | Promise<SubCategory[]>
+
+    search: (
+      parent: undefined,
+      args: ArgsSearch,
+      ctx: Context,
+      info: GraphQLResolveInfo,
+    ) => SearchResults | null | Promise<SearchResults | null>
 
     appState: (
       parent: undefined,
@@ -574,7 +620,6 @@ export namespace PostResolvers {
     createdAt: (parent: Post) => parent.createdAt,
     updatedAt: (parent: Post) => parent.updatedAt,
     isPublished: (parent: Post) => parent.isPublished,
-    slug: (parent: Post) => (parent.slug === undefined ? null : parent.slug),
     title: (parent: Post) => parent.title,
     text: (parent: Post) => parent.text,
     thumbnail: (parent: Post) =>
@@ -667,6 +712,20 @@ export namespace PostResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     categories_every?: CategoryWhereInput | null
     categories_some?: CategoryWhereInput | null
     categories_none?: CategoryWhereInput | null
@@ -835,20 +894,6 @@ export namespace PostResolvers {
     updatedAt_gte?: string | null
     isPublished?: boolean | null
     isPublished_not?: boolean | null
-    slug?: string | null
-    slug_not?: string | null
-    slug_in?: string[] | null
-    slug_not_in?: string[] | null
-    slug_lt?: string | null
-    slug_lte?: string | null
-    slug_gt?: string | null
-    slug_gte?: string | null
-    slug_contains?: string | null
-    slug_not_contains?: string | null
-    slug_starts_with?: string | null
-    slug_not_starts_with?: string | null
-    slug_ends_with?: string | null
-    slug_not_ends_with?: string | null
     title?: string | null
     title_not?: string | null
     title_in?: string[] | null
@@ -863,6 +908,20 @@ export namespace PostResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     text?: string | null
     text_not?: string | null
     text_in?: string[] | null
@@ -947,6 +1006,20 @@ export namespace PostResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     subCategories_every?: SubCategoryWhereInput | null
     subCategories_some?: SubCategoryWhereInput | null
     subCategories_none?: SubCategoryWhereInput | null
@@ -1002,13 +1075,6 @@ export namespace PostResolvers {
     ctx: Context,
     info: GraphQLResolveInfo,
   ) => boolean | Promise<boolean>
-
-  export type SlugResolver = (
-    parent: Post,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo,
-  ) => string | null | Promise<string | null>
 
   export type TitleResolver = (
     parent: Post,
@@ -1087,13 +1153,6 @@ export namespace PostResolvers {
       ctx: Context,
       info: GraphQLResolveInfo,
     ) => boolean | Promise<boolean>
-
-    slug: (
-      parent: Post,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo,
-    ) => string | null | Promise<string | null>
 
     title: (
       parent: Post,
@@ -1342,6 +1401,7 @@ export namespace SubCategoryResolvers {
     createdAt: (parent: SubCategory) => parent.createdAt,
     updatedAt: (parent: SubCategory) => parent.updatedAt,
     title: (parent: SubCategory) => parent.title,
+    normalizeTitle: (parent: SubCategory) => parent.normalizeTitle,
   }
 
   export interface CategoryWhereInput {
@@ -1389,6 +1449,20 @@ export namespace SubCategoryResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     subCategories_every?: SubCategoryWhereInput | null
     subCategories_some?: SubCategoryWhereInput | null
     subCategories_none?: SubCategoryWhereInput | null
@@ -1429,20 +1503,6 @@ export namespace SubCategoryResolvers {
     updatedAt_gte?: string | null
     isPublished?: boolean | null
     isPublished_not?: boolean | null
-    slug?: string | null
-    slug_not?: string | null
-    slug_in?: string[] | null
-    slug_not_in?: string[] | null
-    slug_lt?: string | null
-    slug_lte?: string | null
-    slug_gt?: string | null
-    slug_gte?: string | null
-    slug_contains?: string | null
-    slug_not_contains?: string | null
-    slug_starts_with?: string | null
-    slug_not_starts_with?: string | null
-    slug_ends_with?: string | null
-    slug_not_ends_with?: string | null
     title?: string | null
     title_not?: string | null
     title_in?: string[] | null
@@ -1457,6 +1517,20 @@ export namespace SubCategoryResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     text?: string | null
     text_not?: string | null
     text_in?: string[] | null
@@ -1541,6 +1615,20 @@ export namespace SubCategoryResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     categories_every?: CategoryWhereInput | null
     categories_some?: CategoryWhereInput | null
     categories_none?: CategoryWhereInput | null
@@ -1766,6 +1854,13 @@ export namespace SubCategoryResolvers {
     info: GraphQLResolveInfo,
   ) => string | Promise<string>
 
+  export type NormalizeTitleResolver = (
+    parent: SubCategory,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo,
+  ) => string | Promise<string>
+
   export type CategoriesResolver = (
     parent: SubCategory,
     args: ArgsCategories,
@@ -1809,6 +1904,13 @@ export namespace SubCategoryResolvers {
       info: GraphQLResolveInfo,
     ) => string | Promise<string>
 
+    normalizeTitle: (
+      parent: SubCategory,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo,
+    ) => string | Promise<string>
+
     categories: (
       parent: SubCategory,
       args: ArgsCategories,
@@ -1831,6 +1933,7 @@ export namespace CategoryResolvers {
     createdAt: (parent: Category) => parent.createdAt,
     updatedAt: (parent: Category) => parent.updatedAt,
     title: (parent: Category) => parent.title,
+    normalizeTitle: (parent: Category) => parent.normalizeTitle,
   }
 
   export interface SubCategoryWhereInput {
@@ -1878,6 +1981,20 @@ export namespace CategoryResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     categories_every?: CategoryWhereInput | null
     categories_some?: CategoryWhereInput | null
     categories_none?: CategoryWhereInput | null
@@ -1933,6 +2050,20 @@ export namespace CategoryResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     subCategories_every?: SubCategoryWhereInput | null
     subCategories_some?: SubCategoryWhereInput | null
     subCategories_none?: SubCategoryWhereInput | null
@@ -1973,20 +2104,6 @@ export namespace CategoryResolvers {
     updatedAt_gte?: string | null
     isPublished?: boolean | null
     isPublished_not?: boolean | null
-    slug?: string | null
-    slug_not?: string | null
-    slug_in?: string[] | null
-    slug_not_in?: string[] | null
-    slug_lt?: string | null
-    slug_lte?: string | null
-    slug_gt?: string | null
-    slug_gte?: string | null
-    slug_contains?: string | null
-    slug_not_contains?: string | null
-    slug_starts_with?: string | null
-    slug_not_starts_with?: string | null
-    slug_ends_with?: string | null
-    slug_not_ends_with?: string | null
     title?: string | null
     title_not?: string | null
     title_in?: string[] | null
@@ -2001,6 +2118,20 @@ export namespace CategoryResolvers {
     title_not_starts_with?: string | null
     title_ends_with?: string | null
     title_not_ends_with?: string | null
+    normalizeTitle?: string | null
+    normalizeTitle_not?: string | null
+    normalizeTitle_in?: string[] | null
+    normalizeTitle_not_in?: string[] | null
+    normalizeTitle_lt?: string | null
+    normalizeTitle_lte?: string | null
+    normalizeTitle_gt?: string | null
+    normalizeTitle_gte?: string | null
+    normalizeTitle_contains?: string | null
+    normalizeTitle_not_contains?: string | null
+    normalizeTitle_starts_with?: string | null
+    normalizeTitle_not_starts_with?: string | null
+    normalizeTitle_ends_with?: string | null
+    normalizeTitle_not_ends_with?: string | null
     text?: string | null
     text_not?: string | null
     text_in?: string[] | null
@@ -2245,6 +2376,13 @@ export namespace CategoryResolvers {
     info: GraphQLResolveInfo,
   ) => string | Promise<string>
 
+  export type NormalizeTitleResolver = (
+    parent: Category,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo,
+  ) => string | Promise<string>
+
   export type SubCategoriesResolver = (
     parent: Category,
     args: ArgsSubCategories,
@@ -2275,6 +2413,13 @@ export namespace CategoryResolvers {
     ) => string | Promise<string>
 
     title: (
+      parent: Category,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo,
+    ) => string | Promise<string>
+
+    normalizeTitle: (
       parent: Category,
       args: {},
       ctx: Context,
@@ -2326,6 +2471,54 @@ export namespace VoteSummaryResolvers {
       ctx: Context,
       info: GraphQLResolveInfo,
     ) => number | null | Promise<number | null>
+  }
+}
+
+export namespace SearchResultsResolvers {
+  export const defaultResolvers = {}
+
+  export type PostsResolver = (
+    parent: SearchResults,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo,
+  ) => Array<Post | null> | Promise<Array<Post | null>>
+
+  export type SubCategoriesResolver = (
+    parent: SearchResults,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo,
+  ) => Array<SubCategory | null> | Promise<Array<SubCategory | null>>
+
+  export type CategoriesResolver = (
+    parent: SearchResults,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo,
+  ) => Array<Category | null> | Promise<Array<Category | null>>
+
+  export interface Type {
+    posts: (
+      parent: SearchResults,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo,
+    ) => Array<Post | null> | Promise<Array<Post | null>>
+
+    subCategories: (
+      parent: SearchResults,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo,
+    ) => Array<SubCategory | null> | Promise<Array<SubCategory | null>>
+
+    categories: (
+      parent: SearchResults,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo,
+    ) => Array<Category | null> | Promise<Array<Category | null>>
   }
 }
 
@@ -2659,6 +2852,7 @@ export interface Resolvers {
   SubCategory: SubCategoryResolvers.Type
   Category: CategoryResolvers.Type
   VoteSummary: VoteSummaryResolvers.Type
+  SearchResults: SearchResultsResolvers.Type
   AppState: AppStateResolvers.Type
   Mutation: MutationResolvers.Type
   AuthPayload: AuthPayloadResolvers.Type

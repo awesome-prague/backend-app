@@ -15,6 +15,8 @@ export interface VoteSummary {
   dislikes: number | null
 }
 
+export interface SearchResults {}
+
 export function getUserIdOrThrowError(ctx: Context) {
   const Authorization = ctx.request.get('Authorization')
   if (Authorization) {

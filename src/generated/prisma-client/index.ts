@@ -335,7 +335,9 @@ export type SubCategoryOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC"
   | "title_ASC"
-  | "title_DESC";
+  | "title_DESC"
+  | "normalizeTitle_ASC"
+  | "normalizeTitle_DESC";
 
 export type CategoryOrderByInput =
   | "id_ASC"
@@ -345,7 +347,9 @@ export type CategoryOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC"
   | "title_ASC"
-  | "title_DESC";
+  | "title_DESC"
+  | "normalizeTitle_ASC"
+  | "normalizeTitle_DESC";
 
 export type PostOrderByInput =
   | "id_ASC"
@@ -356,10 +360,10 @@ export type PostOrderByInput =
   | "updatedAt_DESC"
   | "isPublished_ASC"
   | "isPublished_DESC"
-  | "slug_ASC"
-  | "slug_DESC"
   | "title_ASC"
   | "title_DESC"
+  | "normalizeTitle_ASC"
+  | "normalizeTitle_DESC"
   | "text_ASC"
   | "text_DESC"
   | "thumbnail_ASC"
@@ -464,8 +468,8 @@ export interface UserSubscriptionWhereInput {
 
 export interface PostCreateWithoutVotesInput {
   isPublished?: Boolean;
-  slug?: String;
   title: String;
+  normalizeTitle: String;
   text: String;
   author: UserCreateOneWithoutPostsInput;
   subCategories?: SubCategoryCreateManyWithoutPostsInput;
@@ -517,6 +521,20 @@ export interface CategoryWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
+  normalizeTitle?: String;
+  normalizeTitle_not?: String;
+  normalizeTitle_in?: String[] | String;
+  normalizeTitle_not_in?: String[] | String;
+  normalizeTitle_lt?: String;
+  normalizeTitle_lte?: String;
+  normalizeTitle_gt?: String;
+  normalizeTitle_gte?: String;
+  normalizeTitle_contains?: String;
+  normalizeTitle_not_contains?: String;
+  normalizeTitle_starts_with?: String;
+  normalizeTitle_not_starts_with?: String;
+  normalizeTitle_ends_with?: String;
+  normalizeTitle_not_ends_with?: String;
   subCategories_every?: SubCategoryWhereInput;
   subCategories_some?: SubCategoryWhereInput;
   subCategories_none?: SubCategoryWhereInput;
@@ -660,6 +678,7 @@ export interface UserWhereInput {
 
 export interface SubCategoryCreateWithoutPostsInput {
   title: String;
+  normalizeTitle: String;
   categories?: CategoryCreateManyWithoutSubCategoriesInput;
 }
 
@@ -694,6 +713,7 @@ export interface CategorySubscriptionWhereInput {
 
 export interface CategoryCreateWithoutSubCategoriesInput {
   title: String;
+  normalizeTitle: String;
 }
 
 export interface VoteUpdateManyMutationInput {
@@ -761,6 +781,7 @@ export interface UserCreateWithoutVotesInput {
 
 export interface SubCategoryUpdateInput {
   title?: String;
+  normalizeTitle?: String;
   categories?: CategoryUpdateManyWithoutSubCategoriesInput;
   posts?: PostUpdateManyWithoutSubCategoriesInput;
 }
@@ -772,14 +793,14 @@ export interface PostCreateManyWithoutAuthorInput {
 
 export type PostWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
-  slug?: String;
   title?: String;
+  normalizeTitle?: String;
 }>;
 
 export interface PostCreateWithoutAuthorInput {
   isPublished?: Boolean;
-  slug?: String;
   title: String;
+  normalizeTitle: String;
   text: String;
   votes?: VoteCreateManyWithoutPostInput;
   subCategories?: SubCategoryCreateManyWithoutPostsInput;
@@ -788,8 +809,8 @@ export interface PostCreateWithoutAuthorInput {
 
 export interface PostUpdateInput {
   isPublished?: Boolean;
-  slug?: String;
   title?: String;
+  normalizeTitle?: String;
   text?: String;
   author?: UserUpdateOneRequiredWithoutPostsInput;
   votes?: VoteUpdateManyWithoutPostInput;
@@ -799,12 +820,14 @@ export interface PostUpdateInput {
 
 export interface CategoryUpdateInput {
   title?: String;
+  normalizeTitle?: String;
   subCategories?: SubCategoryUpdateManyWithoutCategoriesInput;
 }
 
 export type SubCategoryWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   title?: String;
+  normalizeTitle?: String;
 }>;
 
 export interface SubCategoryUpdateManyWithoutCategoriesInput {
@@ -854,6 +877,7 @@ export type UserWhereUniqueInput = AtLeastOne<{
 
 export interface SubCategoryUpdateWithoutCategoriesDataInput {
   title?: String;
+  normalizeTitle?: String;
   posts?: PostUpdateManyWithoutSubCategoriesInput;
 }
 
@@ -925,20 +949,6 @@ export interface PostScalarWhereInput {
   updatedAt_gte?: DateTimeInput;
   isPublished?: Boolean;
   isPublished_not?: Boolean;
-  slug?: String;
-  slug_not?: String;
-  slug_in?: String[] | String;
-  slug_not_in?: String[] | String;
-  slug_lt?: String;
-  slug_lte?: String;
-  slug_gt?: String;
-  slug_gte?: String;
-  slug_contains?: String;
-  slug_not_contains?: String;
-  slug_starts_with?: String;
-  slug_not_starts_with?: String;
-  slug_ends_with?: String;
-  slug_not_ends_with?: String;
   title?: String;
   title_not?: String;
   title_in?: String[] | String;
@@ -953,6 +963,20 @@ export interface PostScalarWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
+  normalizeTitle?: String;
+  normalizeTitle_not?: String;
+  normalizeTitle_in?: String[] | String;
+  normalizeTitle_not_in?: String[] | String;
+  normalizeTitle_lt?: String;
+  normalizeTitle_lte?: String;
+  normalizeTitle_gt?: String;
+  normalizeTitle_gte?: String;
+  normalizeTitle_contains?: String;
+  normalizeTitle_not_contains?: String;
+  normalizeTitle_starts_with?: String;
+  normalizeTitle_not_starts_with?: String;
+  normalizeTitle_ends_with?: String;
+  normalizeTitle_not_ends_with?: String;
   text?: String;
   text_not?: String;
   text_in?: String[] | String;
@@ -988,8 +1012,8 @@ export interface PostScalarWhereInput {
 
 export interface PostUpdateWithoutSubCategoriesDataInput {
   isPublished?: Boolean;
-  slug?: String;
   title?: String;
+  normalizeTitle?: String;
   text?: String;
   author?: UserUpdateOneRequiredWithoutPostsInput;
   votes?: VoteUpdateManyWithoutPostInput;
@@ -998,8 +1022,8 @@ export interface PostUpdateWithoutSubCategoriesDataInput {
 
 export interface PostUpdateWithoutAuthorDataInput {
   isPublished?: Boolean;
-  slug?: String;
   title?: String;
+  normalizeTitle?: String;
   text?: String;
   votes?: VoteUpdateManyWithoutPostInput;
   subCategories?: SubCategoryUpdateManyWithoutPostsInput;
@@ -1009,6 +1033,7 @@ export interface PostUpdateWithoutAuthorDataInput {
 export type CategoryWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   title?: String;
+  normalizeTitle?: String;
 }>;
 
 export interface AppStateCreateInput {
@@ -1107,8 +1132,8 @@ export interface UserCreateOneWithoutPostsInput {
 
 export interface PostUpdateWithoutVotesDataInput {
   isPublished?: Boolean;
-  slug?: String;
   title?: String;
+  normalizeTitle?: String;
   text?: String;
   author?: UserUpdateOneRequiredWithoutPostsInput;
   subCategories?: SubCategoryUpdateManyWithoutPostsInput;
@@ -1179,20 +1204,6 @@ export interface PostWhereInput {
   updatedAt_gte?: DateTimeInput;
   isPublished?: Boolean;
   isPublished_not?: Boolean;
-  slug?: String;
-  slug_not?: String;
-  slug_in?: String[] | String;
-  slug_not_in?: String[] | String;
-  slug_lt?: String;
-  slug_lte?: String;
-  slug_gt?: String;
-  slug_gte?: String;
-  slug_contains?: String;
-  slug_not_contains?: String;
-  slug_starts_with?: String;
-  slug_not_starts_with?: String;
-  slug_ends_with?: String;
-  slug_not_ends_with?: String;
   title?: String;
   title_not?: String;
   title_in?: String[] | String;
@@ -1207,6 +1218,20 @@ export interface PostWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
+  normalizeTitle?: String;
+  normalizeTitle_not?: String;
+  normalizeTitle_in?: String[] | String;
+  normalizeTitle_not_in?: String[] | String;
+  normalizeTitle_lt?: String;
+  normalizeTitle_lte?: String;
+  normalizeTitle_gt?: String;
+  normalizeTitle_gte?: String;
+  normalizeTitle_contains?: String;
+  normalizeTitle_not_contains?: String;
+  normalizeTitle_starts_with?: String;
+  normalizeTitle_not_starts_with?: String;
+  normalizeTitle_ends_with?: String;
+  normalizeTitle_not_ends_with?: String;
   text?: String;
   text_not?: String;
   text_in?: String[] | String;
@@ -1296,6 +1321,7 @@ export interface VoteWhereInput {
 
 export interface SubCategoryUpdateWithoutPostsDataInput {
   title?: String;
+  normalizeTitle?: String;
   categories?: CategoryUpdateManyWithoutSubCategoriesInput;
 }
 
@@ -1366,18 +1392,20 @@ export interface CategoryUpdateWithWhereUniqueWithoutSubCategoriesInput {
 
 export interface SubCategoryCreateInput {
   title: String;
+  normalizeTitle: String;
   categories?: CategoryCreateManyWithoutSubCategoriesInput;
   posts?: PostCreateManyWithoutSubCategoriesInput;
 }
 
 export interface CategoryUpdateWithoutSubCategoriesDataInput {
   title?: String;
+  normalizeTitle?: String;
 }
 
 export interface PostCreateInput {
   isPublished?: Boolean;
-  slug?: String;
   title: String;
+  normalizeTitle: String;
   text: String;
   author: UserCreateOneWithoutPostsInput;
   votes?: VoteCreateManyWithoutPostInput;
@@ -1442,6 +1470,20 @@ export interface CategoryScalarWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
+  normalizeTitle?: String;
+  normalizeTitle_not?: String;
+  normalizeTitle_in?: String[] | String;
+  normalizeTitle_not_in?: String[] | String;
+  normalizeTitle_lt?: String;
+  normalizeTitle_lte?: String;
+  normalizeTitle_gt?: String;
+  normalizeTitle_gte?: String;
+  normalizeTitle_contains?: String;
+  normalizeTitle_not_contains?: String;
+  normalizeTitle_starts_with?: String;
+  normalizeTitle_not_starts_with?: String;
+  normalizeTitle_ends_with?: String;
+  normalizeTitle_not_ends_with?: String;
   AND?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
   OR?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
   NOT?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
@@ -1449,8 +1491,8 @@ export interface CategoryScalarWhereInput {
 
 export interface PostUpdateManyDataInput {
   isPublished?: Boolean;
-  slug?: String;
   title?: String;
+  normalizeTitle?: String;
   text?: String;
   thumbnail?: String;
 }
@@ -1468,6 +1510,7 @@ export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
 
 export interface CategoryUpdateManyDataInput {
   title?: String;
+  normalizeTitle?: String;
 }
 
 export interface AppStateUpdateInput {
@@ -1482,6 +1525,7 @@ export interface SubCategoryUpsertWithWhereUniqueWithoutPostsInput {
 
 export interface CategoryCreateInput {
   title: String;
+  normalizeTitle: String;
   subCategories?: SubCategoryCreateManyWithoutCategoriesInput;
 }
 
@@ -1530,6 +1574,20 @@ export interface SubCategoryScalarWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
+  normalizeTitle?: String;
+  normalizeTitle_not?: String;
+  normalizeTitle_in?: String[] | String;
+  normalizeTitle_not_in?: String[] | String;
+  normalizeTitle_lt?: String;
+  normalizeTitle_lte?: String;
+  normalizeTitle_gt?: String;
+  normalizeTitle_gte?: String;
+  normalizeTitle_contains?: String;
+  normalizeTitle_not_contains?: String;
+  normalizeTitle_starts_with?: String;
+  normalizeTitle_not_starts_with?: String;
+  normalizeTitle_ends_with?: String;
+  normalizeTitle_not_ends_with?: String;
   AND?: SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput;
   OR?: SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput;
   NOT?: SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput;
@@ -1537,8 +1595,8 @@ export interface SubCategoryScalarWhereInput {
 
 export interface PostCreateWithoutSubCategoriesInput {
   isPublished?: Boolean;
-  slug?: String;
   title: String;
+  normalizeTitle: String;
   text: String;
   author: UserCreateOneWithoutPostsInput;
   votes?: VoteCreateManyWithoutPostInput;
@@ -1595,6 +1653,20 @@ export interface SubCategoryWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
+  normalizeTitle?: String;
+  normalizeTitle_not?: String;
+  normalizeTitle_in?: String[] | String;
+  normalizeTitle_not_in?: String[] | String;
+  normalizeTitle_lt?: String;
+  normalizeTitle_lte?: String;
+  normalizeTitle_gt?: String;
+  normalizeTitle_gte?: String;
+  normalizeTitle_contains?: String;
+  normalizeTitle_not_contains?: String;
+  normalizeTitle_starts_with?: String;
+  normalizeTitle_not_starts_with?: String;
+  normalizeTitle_ends_with?: String;
+  normalizeTitle_not_ends_with?: String;
   categories_every?: CategoryWhereInput;
   categories_some?: CategoryWhereInput;
   categories_none?: CategoryWhereInput;
@@ -1608,6 +1680,7 @@ export interface SubCategoryWhereInput {
 
 export interface SubCategoryUpdateManyDataInput {
   title?: String;
+  normalizeTitle?: String;
 }
 
 export interface AppStateSubscriptionWhereInput {
@@ -1628,6 +1701,7 @@ export interface PostUpsertWithoutVotesInput {
 
 export interface SubCategoryUpdateManyMutationInput {
   title?: String;
+  normalizeTitle?: String;
 }
 
 export interface VoteUpsertWithWhereUniqueWithoutUserInput {
@@ -1638,6 +1712,7 @@ export interface VoteUpsertWithWhereUniqueWithoutUserInput {
 
 export interface CategoryUpdateManyMutationInput {
   title?: String;
+  normalizeTitle?: String;
 }
 
 export interface VoteScalarWhereInput {
@@ -1756,8 +1831,8 @@ export interface UserUpsertWithoutPostsInput {
 
 export interface PostUpdateManyMutationInput {
   isPublished?: Boolean;
-  slug?: String;
   title?: String;
+  normalizeTitle?: String;
   text?: String;
   thumbnail?: String;
 }
@@ -1775,6 +1850,7 @@ export interface SubCategorySubscriptionWhereInput {
 
 export interface SubCategoryCreateWithoutCategoriesInput {
   title: String;
+  normalizeTitle: String;
   posts?: PostCreateManyWithoutSubCategoriesInput;
 }
 
@@ -1845,6 +1921,7 @@ export interface SubCategoryPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   title: String;
+  normalizeTitle: String;
 }
 
 export interface SubCategoryPreviousValuesPromise
@@ -1854,6 +1931,7 @@ export interface SubCategoryPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   title: () => Promise<String>;
+  normalizeTitle: () => Promise<String>;
 }
 
 export interface SubCategoryPreviousValuesSubscription
@@ -1863,6 +1941,7 @@ export interface SubCategoryPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   title: () => Promise<AsyncIterator<String>>;
+  normalizeTitle: () => Promise<AsyncIterator<String>>;
 }
 
 export interface User {
@@ -1974,8 +2053,8 @@ export interface Post {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   isPublished: Boolean;
-  slug?: String;
   title: String;
+  normalizeTitle: String;
   text: String;
   thumbnail?: String;
 }
@@ -1985,8 +2064,8 @@ export interface PostPromise extends Promise<Post>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   isPublished: () => Promise<Boolean>;
-  slug: () => Promise<String>;
   title: () => Promise<String>;
+  normalizeTitle: () => Promise<String>;
   text: () => Promise<String>;
   author: <T = UserPromise>() => T;
   votes: <T = FragmentableArray<Vote>>(
@@ -2021,8 +2100,8 @@ export interface PostSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   isPublished: () => Promise<AsyncIterator<Boolean>>;
-  slug: () => Promise<AsyncIterator<String>>;
   title: () => Promise<AsyncIterator<String>>;
+  normalizeTitle: () => Promise<AsyncIterator<String>>;
   text: () => Promise<AsyncIterator<String>>;
   author: <T = UserSubscription>() => T;
   votes: <T = Promise<AsyncIterator<VoteSubscription>>>(
@@ -2071,6 +2150,7 @@ export interface Category {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   title: String;
+  normalizeTitle: String;
 }
 
 export interface CategoryPromise extends Promise<Category>, Fragmentable {
@@ -2078,6 +2158,7 @@ export interface CategoryPromise extends Promise<Category>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   title: () => Promise<String>;
+  normalizeTitle: () => Promise<String>;
   subCategories: <T = FragmentableArray<SubCategory>>(
     args?: {
       where?: SubCategoryWhereInput;
@@ -2098,6 +2179,7 @@ export interface CategorySubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   title: () => Promise<AsyncIterator<String>>;
+  normalizeTitle: () => Promise<AsyncIterator<String>>;
   subCategories: <T = Promise<AsyncIterator<SubCategorySubscription>>>(
     args?: {
       where?: SubCategoryWhereInput;
@@ -2175,6 +2257,7 @@ export interface SubCategory {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   title: String;
+  normalizeTitle: String;
 }
 
 export interface SubCategoryPromise extends Promise<SubCategory>, Fragmentable {
@@ -2182,6 +2265,7 @@ export interface SubCategoryPromise extends Promise<SubCategory>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   title: () => Promise<String>;
+  normalizeTitle: () => Promise<String>;
   categories: <T = FragmentableArray<Category>>(
     args?: {
       where?: CategoryWhereInput;
@@ -2213,6 +2297,7 @@ export interface SubCategorySubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   title: () => Promise<AsyncIterator<String>>;
+  normalizeTitle: () => Promise<AsyncIterator<String>>;
   categories: <T = Promise<AsyncIterator<CategorySubscription>>>(
     args?: {
       where?: CategoryWhereInput;
@@ -2529,6 +2614,7 @@ export interface CategoryPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   title: String;
+  normalizeTitle: String;
 }
 
 export interface CategoryPreviousValuesPromise
@@ -2538,6 +2624,7 @@ export interface CategoryPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   title: () => Promise<String>;
+  normalizeTitle: () => Promise<String>;
 }
 
 export interface CategoryPreviousValuesSubscription
@@ -2547,6 +2634,7 @@ export interface CategoryPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   title: () => Promise<AsyncIterator<String>>;
+  normalizeTitle: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AggregateSubCategory {
@@ -2677,8 +2765,8 @@ export interface PostPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   isPublished: Boolean;
-  slug?: String;
   title: String;
+  normalizeTitle: String;
   text: String;
   thumbnail?: String;
 }
@@ -2690,8 +2778,8 @@ export interface PostPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   isPublished: () => Promise<Boolean>;
-  slug: () => Promise<String>;
   title: () => Promise<String>;
+  normalizeTitle: () => Promise<String>;
   text: () => Promise<String>;
   thumbnail: () => Promise<String>;
 }
@@ -2703,8 +2791,8 @@ export interface PostPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   isPublished: () => Promise<AsyncIterator<Boolean>>;
-  slug: () => Promise<AsyncIterator<String>>;
   title: () => Promise<AsyncIterator<String>>;
+  normalizeTitle: () => Promise<AsyncIterator<String>>;
   text: () => Promise<AsyncIterator<String>>;
   thumbnail: () => Promise<AsyncIterator<String>>;
 }

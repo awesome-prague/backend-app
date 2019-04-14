@@ -10,6 +10,7 @@ import { Vote } from './Vote'
 import { SubCategory } from './SubCategory'
 import { Category } from './Category'
 import { VoteSummary } from './VoteSummary'
+import { SearchResults } from './SearchResults'
 import { AppState } from './AppState'
 import { Mutation } from './Mutation'
 import { AuthPayload } from './AuthPayload'
@@ -23,6 +24,7 @@ export const resolvers: Resolvers = {
   SubCategory,
   Category,
   VoteSummary,
+  SearchResults,
   AppState,
   Mutation,
   AuthPayload,

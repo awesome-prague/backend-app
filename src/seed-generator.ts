@@ -17,7 +17,10 @@ const generateUser = async (user: { email: string; name: string }) => {
 }
 
 const generateCategories = async ({ title }: { title: string }) => {
-  return await db.createCategory({ title })
+  return await db.createCategory({
+    title,
+    normalizeTitle: title.toLocaleLowerCase(),
+  })
 }
 
 const generateSubCategories = async ({
@@ -34,6 +37,7 @@ const generateSubCategories = async ({
       },
     },
     title,
+    normalizeTitle: title.toLocaleLowerCase(),
   })
 }
 
@@ -53,6 +57,7 @@ const generatePosts = async ({
       },
     },
     title,
+    normalizeTitle: title.toLocaleLowerCase(),
     text: faker.lorem.sentence(),
     subCategories: {
       connect: {

@@ -1,4 +1,4 @@
-# import Post, Vote, VoteType, UserRole, Category, AppState, PostWhereInput, PostOrderByInput, VoteWhereInput, VoteOrderByInput, SubCategoryWhereInput, SubCategoryOrderByInput  from "./generated/prisma.graphql"
+# import Post, Vote, VoteType, UserRole, Category, SubCategory, AppState, PostWhereInput, PostOrderByInput, VoteWhereInput, VoteOrderByInput, SubCategoryWhereInput, SubCategoryOrderByInput  from "./generated/prisma.graphql"
 
 type Query {
   feed: [Post!]!
@@ -12,9 +12,10 @@ type Query {
     before: String
     first: Int
     last: Int
-  ): [Post]!
+  ): [Post!]!
   welcomePost: Post
-  searchCategories(value: String!): [Category!]!
+  subCategories: [SubCategory!]!
+  search(value: String!): SearchResults
   appState: AppState!
   me: User
 }
@@ -59,7 +60,6 @@ type Post {
   createdAt: DateTime!
   updatedAt: DateTime!
   isPublished: Boolean!
-  slug: String
   title: String!
   text: String!
   author: User!
@@ -88,4 +88,10 @@ type Post {
 type VoteSummary {
   likes: Int
   dislikes: Int
+}
+
+type SearchResults {
+  posts: [Post]!
+  subCategories: [SubCategory]!
+  categories: [Category]!
 }

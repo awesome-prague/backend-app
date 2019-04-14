@@ -20,7 +20,10 @@ export const Query: QueryResolvers.Type = {
   welcomePost: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  searchCategories: (parent, args, ctx) => {
+  subCategories: (parent, args, ctx) => {
+    throw new Error('Resolver not implemented')
+  },
+  search: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
   appState: (parent, args, ctx) => {
